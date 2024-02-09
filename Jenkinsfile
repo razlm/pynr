@@ -20,11 +20,9 @@ pipeline {
                         ls -a ./counter-app/
                         pwd
                         echo "Contents of SSH Key File:"
-                        creds = ${SSH_KEY}
-                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker build -t counter-service ./counter-app/Dockerfile'
+                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'echo "I'm inside"'
                     '''
                 }
-                println creds
             }
         }
 

@@ -12,6 +12,16 @@ pipeline {
             }
         }
 
+        stage('Pull repo to vm') {
+            steps {
+                withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
+                    sh '''
+                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'git clone -b ${params.BRANCH} https://github.com/razlm/pynr'
+                    '''
+                }
+            }
+        }
+
         stage('Build new docker image') {
             steps {
                 withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {

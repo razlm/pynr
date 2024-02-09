@@ -16,11 +16,8 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
                     sh '''
-                        ls -a
                         ls -a ./counter-app/
-                        pwd
-                        echo "Contents of SSH Key File:"
-                        ssh -i $SSH_KEY ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'echo nside'
+                        ssh -i $JENKINS_HOME/credentials/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker build -t counter-service ./counter-app/Dockerfile'
                     '''
                 }
             }

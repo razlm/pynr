@@ -17,6 +17,7 @@ pipeline {
                 withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
                     sh '''
                         ls -a
+                        ls -a ./counter-app/
                         pwd
                         echo "Contents of SSH Key File:"
                         cat $SSH_KEY

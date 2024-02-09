@@ -12,12 +12,12 @@ pipeline {
             }
         }
 
-        stage('Build new docker image') {
+        stage('Build') {
             steps {
                 withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
                     sh '''
                         ls -a ./counter-app/
-                        ssh -i $JENKINS_HOME/credentials/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker build -t counter-service ./counter-app/Dockerfile'
+                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker build -t counter-service ./counter-app/Dockerfile'
                     '''
                 }
             }

@@ -12,12 +12,23 @@ pipeline {
             }
         }
 
-        stage('Build and Deploy') {
+        stage('Build new docker image') {
             steps {
-                // Build and deploy your service here
-                // You might use Docker, npm, etc., depending on your service
-                // Example: sh 'npm install && npm run build'
-                // Example: sh 'docker build -t counter-service . && docker run -p 80:80 counter-service'
+                withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
+                    sh '''
+                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker build -t counter-service ./counter-app/.'
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy new docker image') {
+            steps {
+                withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
+                    sh '''
+                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker run -d -p 80:80 counter-service'
+                    '''
+                }
             }
         }
 

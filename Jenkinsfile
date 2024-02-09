@@ -16,7 +16,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
                     sh '''
-                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'git clone https://github.com/razlm/pynr'
+                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'git clone -b ${params.BRANCH} https://github.com/razlm/pynr'
                     '''
                 }
             }
@@ -27,7 +27,7 @@ pipeline {
                 withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
                     sh '''
                         ls -a ./counter-app/
-                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker build -t counter-service ./counter-app/Dockerfile'
+                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker build -t counter-service ./pynr/counter-app/Dockerfile'
                     '''
                 }
             }

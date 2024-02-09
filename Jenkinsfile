@@ -12,7 +12,7 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build new docker image') {
             steps {
                 withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
                     sh '''

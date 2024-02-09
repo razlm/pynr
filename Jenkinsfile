@@ -34,7 +34,10 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // Run tests if applicable
+                sh '''
+                    ECHO "Cheking count num:"
+                    curl -X GET http://ec2-3-120-148-111.eu-central-1.compute.amazonaws.com
+                '''
             }
         }
     }
@@ -42,12 +45,10 @@ pipeline {
     post {
         success {
             echo 'Pipeline succeeded. Service is ready for production.'
-            // Additional steps if needed
         }
 
         failure {
             echo 'Pipeline failed. Take necessary actions.'
-            // Additional steps if needed
         }
     }
 }

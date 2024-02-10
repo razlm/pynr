@@ -56,8 +56,8 @@ pipeline {
             steps {
                 script {
                     // Stop and remove all existing containers with the name "counter-service"
-                    sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker stop \$(sudo docker ps -q -f name=counter-service) && sudo docker rm \$(sudo docker ps -aq -f name=counter-service)'"
-
+                    sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker ps -q -f name=counter-service | xargs -r sudo docker stop | xargs -r sudo docker rm'"
+                    
                     // Build and run the new Docker container on port 80 for production
                     sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker run -d -p 80:80 --name counter-service counter-service'"
                 }

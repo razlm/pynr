@@ -1,11 +1,9 @@
-FROM node:14
+FROM python:3.9
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install
-
 COPY . .
 
-CMD ["node", "app.js"]
+RUN pip install -r requirements.txt
+
+CMD ["python", "app.py"]

@@ -14,9 +14,9 @@ pipeline {
 
         stage('Pull repo to vm') {
             steps {
-                script{
+                withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
                     sh '''
-                        ssh centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "echo 'IM INSIDE'"
+                        ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "echo 'IM INSIDE'"
                     '''
                 }
             }

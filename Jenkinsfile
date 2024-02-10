@@ -47,8 +47,8 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                    ECHO "Cheking count num:"
-                    curl localhost:80
+                    echo "Cheking count num:"
+                    ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'curl localhost:80'
                 '''
             }
         }

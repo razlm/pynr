@@ -57,9 +57,9 @@ pipeline {
                 script {
                     // Stop and remove the existing container if it exists
                     def existingContainerId = sh(
-                        script: "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker ps -q -f name=counter-service'",
+                        script: "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'docker ps -q -f name=counter-service'",
                         returnStatus: true
-                    ).trim()
+                    ).toString().trim()
                     if (existingContainerId) {
                         sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker stop counter-service && sudo docker rm counter-service'"
                     }

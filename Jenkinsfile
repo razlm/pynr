@@ -12,12 +12,13 @@ pipeline {
             }
         }
 
-        stage('Pull repo to vm') {
+        stage('Copy git to host') {
             steps {
-                withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
+                script {
                     sh '''
                         ls -la
-                        ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "echo 'IM INSIDE'"
+                        scp -i /var/jenkins_home/devops-exam.pem -r ./counter-app centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com:/home/centos/.
+                        ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "ls -la"
                     '''
                 }
             }
@@ -25,10 +26,10 @@ pipeline {
 
         stage('Build new docker image') {
             steps {
-                withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
+                script {
                     sh '''
-                        ls -a ./counter-app/
-                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker build -t counter-service /home/ubuntu/jenkins_compose/jenkins_configuration/pynr/counter-app/Dockerfile'
+                        ECHO "----------Build new docker image---------------"
+                        ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "sudo docker build -t counter-service /home/centos/counter-app/."
                     '''
                 }
             }
@@ -36,7 +37,7 @@ pipeline {
 
         stage('Deploy new docker image') {
             steps {
-                withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
+                script {
                     sh '''
                         ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker run -d -p 80:80 counter-service'
                     '''

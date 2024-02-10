@@ -43,15 +43,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Run Tests') {
-            steps {
-                sh '''
-                    echo "Cheking count num:"
-                    curl 0.0.0.0:80
-                '''
-            }
-        }
     }
 
     post {

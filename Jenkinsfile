@@ -61,7 +61,7 @@ pipeline {
                         returnStatus: true
                     ).toString().trim()
                     if (existingContainerId) {
-                        sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker stop counter-service && sudo docker rm counter-service'"
+                        sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker stop $existingContainerId && sudo docker rm $existingContainerId'"
                     }
 
                     // Build and run the new Docker container on port 80 for production

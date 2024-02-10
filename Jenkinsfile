@@ -61,6 +61,7 @@ pipeline {
                         returnStatus: true
                     ).trim()
                     if (existingContainerId) {
+                        sh 'echo $existingContainerId'
                         sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker stop ${existingContainerId} && sudo docker rm ${existingContainerId}'"
                     }
 

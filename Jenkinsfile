@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "sudo docker build -t counter-service /home/centos/counter-app/."
+                        ssh -o ConnectTimeout=300 -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "sudo docker build -t counter-service /home/centos/counter-app/."
                     '''
                 }
             }

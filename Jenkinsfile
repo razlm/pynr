@@ -48,7 +48,7 @@ pipeline {
             steps {
                 sh '''
                     ECHO "Cheking count num:"
-                    curl -X GET http://ec2-3-120-148-111.eu-central-1.compute.amazonaws.com
+                    curl localhost:80
                 '''
             }
         }

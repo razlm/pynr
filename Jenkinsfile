@@ -16,7 +16,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'ssh-to-vm', variable: 'SSH_KEY')]) {
                     sh '''
-                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "ECHO IM INSIDE"
+                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "echo 'IM INSIDE'"
                     '''
                 }
             }

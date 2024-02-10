@@ -56,6 +56,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    export LC_CTYPE="en_US.UTF-8"
                     // Stop and remove the existing container if it exists
                     existingContainerId = "ssh -i ./devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker ps --format "{{.ID}} {{.Image}}" | grep counter-service | awk "{print substr(\$1, 0, 12)}"'"
                     if (existingContainerId) {

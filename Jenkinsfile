@@ -56,11 +56,7 @@ pipeline {
             steps {
                 script {
                     // Stop and remove the existing container if it exists
-                    existingContainerId = sh(
-                        script: 'ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "sudo docker ps | grep counter-service | awk \'{print \$1}\'"',
-                        returnStatus: true,
-                        returnStdout: true
-                    ).trim()
+                    existingContainerId = "ssh -i ./devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker ps --format "{{.ID}} {{.Image}}" | grep counter-service | awk "{print substr(\$1, 0, 12)}"'"
                     if (existingContainerId) {
                         sh 'echo $existingContainerId'
                         sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker stop ${existingContainerId} && sudo docker rm ${existingContainerId}'"

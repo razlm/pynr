@@ -28,7 +28,6 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        ECHO "----------Build new docker image---------------"
                         ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "sudo docker build -t counter-service /home/centos/counter-app/."
                     '''
                 }
@@ -39,7 +38,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        ssh -i $SSH_KEY centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker run -d -p 80:80 counter-service'
+                        ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker run -d -p 80:80 counter-service'
                     '''
                 }
             }

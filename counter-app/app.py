@@ -1,13 +1,19 @@
 from flask import Flask, request
 
 app = Flask(__name__)
-count = 0
+counter = 0
 
-@app.route('/')
-def index():
-    global count
-    count += 1
-    return f'Counter: {count}\n'
+@app.route('/', methods=['GET', 'POST'])
+def handle_requests():
+    global counter
+
+    if request.method == 'POST':
+        # Increment the counter on each POST request
+        counter += 1
+        return f'Counter value: {counter}'
+    else:
+        # Return the current counter value on GET request
+        return f'Current counter value: {counter}'
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80)

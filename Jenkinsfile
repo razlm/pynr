@@ -24,7 +24,7 @@ pipeline {
             }
         }
 
-        stage('Build new docker image') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     sh '''
@@ -34,12 +34,38 @@ pipeline {
             }
         }
 
-        stage('Deploy new docker image') {
+        stage('Run Docker Container for Testing') {
+            when {
+                expression { params.BRANCH != 'main' }
+            }
             steps {
                 script {
                     sh '''
-                        ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker run -d -p 80:80 counter-service'
+                        ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker run -d -p 90:80 --name counter-service-${params.BRANCH} counter-service'
+                        sleep 10
+                        ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker stop counter-service-${params.BRANCH} && sudo docker rm counter-service-${params.BRANCH}'
                     '''
+                }
+            }
+        }
+
+        stage('Deploy Docker Image for Production') {
+            when {
+                expression { params.BRANCH == 'main' }
+            }
+            steps {
+                script {
+                    // Stop and remove the existing container if it exists
+                    def existingContainerId = sh(
+                        script: "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'docker ps -q -f name=counter-service'",
+                        returnStatus: true
+                    ).trim()
+                    if (existingContainerId) {
+                        sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker stop counter-service && sudo docker rm counter-service'"
+                    }
+
+                    // Build and run the new Docker container on port 80 for production
+                    sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker run -d -p 80:80 --name counter-service counter-service'"
                 }
             }
         }

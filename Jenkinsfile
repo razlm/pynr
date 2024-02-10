@@ -65,7 +65,7 @@ pipeline {
                     }
 
                     // Build and run the new Docker container on port 80 for production
-                    sh "ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com 'sudo docker run -d -p 80:80 --name counter-service counter-service'"
+                    sh 'ssh -i /var/jenkins_home/devops-exam.pem centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "sudo docker run -d -p 80:80 --name counter-service counter-service"'
                 }
             }
         }

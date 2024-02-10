@@ -15,7 +15,9 @@ pipeline {
         stage('Pull repo to vm') {
             steps {
                 script{
-                        sh 'ssh centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "echo 'IM INSIDE'"'
+                    sh '''
+                        ssh centos@ec2-3-120-148-111.eu-central-1.compute.amazonaws.com "echo 'IM INSIDE'"
+                    '''
                 }
             }
         }
